@@ -173,24 +173,23 @@ window.Quarto = {
 
 <section id="blood-bank-inventory" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Blood bank inventory</h1>
-<section id="explore-predictions-using-a-single-blood-group" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="explore-predictions-using-a-single-blood-group"><span class="header-section-number">1.1</span> Explore predictions using a single blood group</h2>
-<ul>
-<li>Duration of data window in days (e.g.&nbsp;90)</li>
-<li>Number of transfusion events in time period</li>
-<li>Number of standard deliveries per week</li>
-<li>Target ISI</li>
-<li>Predicted WAPI</li>
-</ul>
-</section>
-<section id="definitions" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="definitions"><span class="header-section-number">1.2</span> Definitions</h2>
-<p>The issuable stock index (ISI) is:</p>
+<p>The app below provides an interactive tool for exploring a model of red blood cell inventory management <a href="https://www.medrxiv.org/content/10.1101/2022.11.04.22281960v2.full">research paper</a>.</p>
+<p>The models allows for the derivation of key performance indicators (KPIs).</p>
+<p>The expressions for KPIs are as follows. The issuable stock index (ISI) is given by</p>
 <p><span class="math display">\[
 ISI=\frac{r}{k_2}-\frac{1}{k_1}
 \]</span> The waste as a percentage of issuable stock (WAPI) is <span class="math display">\[
-100e^{-k_2(A+\frac{1}{k_1}-\mu)}e^{r-1}
+WAPI=100e^{-k_2(A+\frac{1}{k_1}-\mu)}e^{r-1}
 \]</span></p>
+<p>To estimate the KPIs parameter values must be first be estimated ina given clinical settings.</p>
+<ul>
+<li><span class="math inline">\(k_1\)</span> - restock frequency</li>
+<li><span class="math inline">\(k_2\)</span> - demand frequency</li>
+<li><span class="math inline">\(A\)</span> - age that RBCs are disposed</li>
+<li><span class="math inline">\(\mu\)</span> - mean age of supplied RBC</li>
+<li><span class="math inline">\(r\)</span> - restock threshold (order up to value for a given blood group)</li>
+</ul>
+<p>To aid parameter inference, in the app below the user is asked to define an observation time window and the number of demand events for a given blood group. These data are then used to estimate the demand frequency, <span class="math inline">\(k_2\)</span>.</p>
 <pre class="shinylive-python" data-engine="python"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
@@ -475,7 +474,6 @@ app = App(app_ui, server)</code></pre>
 <p>:::</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
