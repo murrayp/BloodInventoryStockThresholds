@@ -221,6 +221,8 @@ app_ui = ui.page_fluid(
     ui.input_slider(id="disposal_age",label="disposal_age",min=0.0,max=40,value=35,step=1),
   
      ),
+    ui.h3("Set baseline parameters"),
+
     "It is assumed that there is a historical record of transfusion supply and demand for a given blood group. From this dataset extract:", 
     ui.h3("Time window"),
     "This is the number of days in the observation window.",
@@ -254,8 +256,9 @@ app_ui = ui.page_fluid(
     "Then use the model to predict some KPIs:",
 
 
+    ui.output_data_frame("displayKPIs"),
 
-        ui.output_data_frame("displayKPIs"),
+    "If the model is accurate in a given setting, these predicted KPIs should agree with historical measurements of KPIs.",
 
     ),
     ),
@@ -269,7 +272,9 @@ app_ui = ui.page_fluid(
     ui.input_slider(id="target_mean_age",label="target_mean_age",min=0.5,max=25,value=8.5,step=0.1)),
     
     "Here we use the model to identify restock thresholds that will give rise to target KPIs (set with the sliders). Given the inputted data in the first two tabs, the value of the restock thresholds that yield target KPIs are:",
-    ui.output_data_frame("displayStockThresholds"),    ),
+    ui.output_data_frame("displayStockThresholds"),    
+    "Here there are three different proposed values of restock threshold, each one giving the target KPI value selected using the sliders."
+    ),
     ),
 
     ui.nav_panel("ISI optimised restock thresholds for all blood groups",
@@ -385,7 +390,7 @@ def server(input, output, session):
         data_dict={'ISI': [isi],'Wapi': [wapi],'Mean_age':[age_trans_init]}
         df=pd.DataFrame.from_dict(data_dict)
 
-        return render.DataTable(df)
+        return render.DataTable(df,height=100)
         
     @render.data_frame
     def displayStockThresholds():
@@ -409,7 +414,7 @@ def server(input, output, session):
         data_dict={'Restock (ISI)': [r_isi],'Restock (WAPI)': [r_wapi],'Restock (Mean age)':[r_age_trans_init]}
         df=pd.DataFrame.from_dict(data_dict)
 
-        return render.DataTable(df)  
+        return render.DataTable(df,height=100)  
 
 
     @render.data_frame
